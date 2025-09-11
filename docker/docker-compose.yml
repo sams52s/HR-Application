@@ -1,0 +1,32 @@
+services:
+  oracle:
+    image: gvenzl/oracle-xe
+    container_name: oracle-xe
+    environment:
+      - ORACLE_PASSWORD=oracle
+      - APP_USER=hr_app
+      - APP_USER_PASSWORD=hr_password
+    ports:
+      - "1521:1521"
+      - "5500:5500"
+    volumes:
+      - oracle_data:/opt/oracle/oradata
+
+  backend:
+    build: ../backend
+    container_name: backend
+    depends_on:
+      - oracle
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build: ../frontend
+    container_name: frontend
+    depends_on:
+      - backend
+    ports:
+      - "4200:80"
+
+volumes:
+  oracle_data:
