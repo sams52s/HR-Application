@@ -2,10 +2,33 @@
   <div class="login-box">
     <h1>HR-System</h1>
 
-    <input type="text" [(ngModel)]="employeeId" placeholder="Employee ID" />
-    <input type="password" [(ngModel)]="password" placeholder="Password" />
+    <form (ngSubmit)="login()" #loginForm="ngForm" novalidate>
+      <div class="form-group">
+        <label for="employeeId">Employee ID</label>
+        <input
+          id="employeeId"
+          type="text"
+          name="employeeId"
+          [(ngModel)]="employeeId"
+          placeholder="Employee ID"
+          required
+        />
+      </div>
 
-    <button (click)="login()">Login</button>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          name="password"
+          [(ngModel)]="password"
+          placeholder="Password"
+          required
+        />
+      </div>
+
+      <button type="submit" class="login-button">Login</button>
+    </form>
 
     <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
   </div>

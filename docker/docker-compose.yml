@@ -1,24 +1,26 @@
+
 services:
-  oracle:
+  oracle-xe:
     image: gvenzl/oracle-xe
+    platform: linux/amd64   # ✅ needed on Apple Silicon
     container_name: oracle-xe
     environment:
-      - ORACLE_PASSWORD=oracle
-      - APP_USER=hr_app
-      - APP_USER_PASSWORD=hr_password
+      ORACLE_PASSWORD: oracle
+      APP_USER: hr_app
+      APP_USER_PASSWORD: hr_password
     ports:
       - "1521:1521"
       - "5500:5500"
-    volumes:
-      - oracle_data:/opt/oracle/oradata
 
   backend:
     build: ../backend
     container_name: backend
     depends_on:
-      - oracle
+      - oracle-xe
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
     ports:
-      - "8080:8080"
+      - "8081:8080"
 
   frontend:
     build: ../frontend
@@ -27,6 +29,3 @@ services:
       - backend
     ports:
       - "4200:80"
-
-volumes:
-  oracle_data:
