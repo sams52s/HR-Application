@@ -1,0 +1,12 @@
+<div class="login-container">
+  <div class="login-box">
+    <h1>HR-System</h1>
+
+    <input type="text" [(ngModel)]="employeeId" placeholder="Employee ID" />
+    <input type="password" [(ngModel)]="password" placeholder="Password" />
+
+    <button (click)="login()">Login</button>
+
+    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+  </div>
+</div>
