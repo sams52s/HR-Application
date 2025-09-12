@@ -1,13 +1,16 @@
 package com.leads.backend.controller;
 
+import com.leads.backend.dto.EmployeeDto;
 import com.leads.backend.model.Employee;
 import com.leads.backend.service.EmployeeService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/employees")
+@CrossOrigin(origins = "http://localhost:4200")
 public class EmployeeController {
   private final EmployeeService employeeService;
 
@@ -16,29 +19,27 @@ public class EmployeeController {
   }
 
   @GetMapping
-  public List<Employee> getEmployees() {
-    return employeeService.findAllByIsDeletedFalse();
+  public List<EmployeeDto> getAllIsDeletedFalseEmployees() {
+    return employeeService.findAllIsDeletedFalse();
   }
-
-  @GetMapping("/with-deleted")
-  public List<Employee> getAllEmployees() {
-    return employeeService.findAll();
+  @GetMapping("/admin-view/all")
+  public List<EmployeeDto> getAllEmployees() {
+    return employeeService.findAllEmployees();
   }
 
   @GetMapping("/{id}")
-  public Employee getEmployee(@PathVariable String id) {
+  public EmployeeDto getEmployeeById(@PathVariable String id) {
     return employeeService.findById(id);
   }
 
   @PostMapping
-  public Employee createEmployee(@RequestBody Employee employee) {
-    return employeeService.save(employee);
+  public EmployeeDto createEmployee(@Valid @RequestBody EmployeeDto dto) {
+    return employeeService.save(dto);
   }
 
-  @PostMapping("/{id}")
-  public Employee updateEmployee(@PathVariable String id, @RequestBody Employee employee) {
-    employee.setEmployeeId(id);
-    return employeeService.save(employee);
+  @PutMapping("/{id}")
+  public EmployeeDto updateEmployee(@PathVariable String id, @RequestBody EmployeeDto dto) {
+    return employeeService.update(id, dto);
   }
 
   @DeleteMapping("/{id}")
